@@ -45,6 +45,7 @@ allDataY$Activity[allDataY$Activity == 6] = "LAYING"
 
 ALL <- cbind(allDataX, allDataY, allDataSubject)
 TIDY <- aggregate(ALL, by=list(ALL$Activity, ALL$Subject), FUN=mean)
+write.table(TIDY, file = "TidyData.txt")
 
 
 
