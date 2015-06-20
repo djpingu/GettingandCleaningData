@@ -31,21 +31,24 @@ allDataX <- allDataX[,filterCol]
 colnames(allDataY) <- "Activity"
 colnames(allDataSubject) <- "Subject"
 
-## 4. Appropriately label the data set with descriptive variable names. 
-
-allDataY$Activity[allDataY$Activity == 1] = "WALKING"
-allDataY$Activity[allDataY$Activity == 2] = "WALKING_UPSTAIRS"
-allDataY$Activity[allDataY$Activity == 3] = "WALKING_DOWNSTAIRS"
-allDataY$Activity[allDataY$Activity == 4] = "SITTING"
-allDataY$Activity[allDataY$Activity == 5] = "STANDING"
-allDataY$Activity[allDataY$Activity == 6] = "LAYING"
-
 ## 5. From the data set in step 4, creates a second, independent tidy data set with 
 ##    the average of each variable for each activity and each subject.
 
 ALL <- cbind(allDataX, allDataY, allDataSubject)
-TIDY <- aggregate(ALL, by=list(ALL$Activity, ALL$Subject), FUN=mean)
-write.table(TIDY, file = "TidyData.txt")
+TIDY <- aggregate(allDataX, by=list(allDataSubject$Subject, allDataY$Activity), FUN=mean)
+colnames(TIDY)[colnames(TIDY)=="Group.1"] <- "Subject"
+colnames(TIDY)[colnames(TIDY)=="Group.2"] <- "Activity"
 
+## 4. Appropriately label the data set with descriptive variable names. 
+
+TIDY$Activity[TIDY$Activity == 1] = "WALKING"
+TIDY$Activity[TIDY$Activity == 2] = "WALKING_UPSTAIRS"
+TIDY$Activity[TIDY$Activity == 3] = "WALKING_DOWNSTAIRS"
+TIDY$Activity[TIDY$Activity == 4] = "SITTING"
+TIDY$Activity[TIDY$Activity == 5] = "STANDING"
+TIDY$Activity[TIDY$Activity == 6] = "LAYING"
+TIDY$Activity <- as.factor(TIDY$Activity)
+
+write.table(TIDY, file = "./Rdata/TidyData.txt")
 
 
